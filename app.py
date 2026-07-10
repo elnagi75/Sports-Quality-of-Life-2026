@@ -65,11 +65,9 @@ st.sidebar.markdown("---")
 # البرواز الديناميكي لعرض صورة الغلاف
 image_name = chapters[selected_chapter]
 if os.path.exists(image_name):
-    # إذا كانت الصورة موجودة في المجلد، يتم عرضها
     st.sidebar.image(image_name, use_column_width=True)
 else:
-    # رسالة مؤقتة تظهر لك كإشعار حتى تقوم برفع الصورة
-    st.sidebar.warning(f"مساحة محجوزة لغلاف: {image_name}")
+    st.sidebar.warning(f"يرجى رفع صورة الغلاف باسم: {image_name}")
 
 st.sidebar.markdown("---")
 st.sidebar.info("📌 هذه المنصة التفاعلية مصممة لمساعدتك على التطبيق العملي للمفاهيم المدروسة بأسلوب مبسط.")
@@ -78,26 +76,21 @@ st.sidebar.info("📌 هذه المنصة التفاعلية مصممة لمسا
 
 def render_intro():
     st.subheader("المقدمة وقائمة المحتويات")
-    # سيتم هنا دمج رابط Heyzine وأي أدوات تفاعلية نستخلصها
-    st.info("نحن الآن في انتظار إضافة المحتوى التفاعلي الخاص بالمقدمة.")
+    # الكود المدمج من Heyzine
+    components.html(
+        """
+        <iframe allowfullscreen="allowfullscreen" allow="autoplay; fullscreen; clipboard-write" scrolling="no" class="fp-iframe" style="border: 1px solid lightgray; width: 100%; height: 479px;" src="https://heyzine.com/flip-book/8107d3f1a1.html"></iframe>
+        """,
+        height=500
+    )
+    st.markdown("---")
 
 def render_placeholder(chapter_title):
     st.subheader(chapter_title)
-    st.info(f"محتوى '{chapter_title}' قيد التجهيز... سيتم بناؤه لاحقاً خطوة بخطوة.")
+    st.info(f"محتوى '{chapter_title}' قيد التجهيز... سيتم بناؤه لاحقاً.")
 
 # --- 6. الموجه الديناميكي (Router) ---
 if selected_chapter == "المقدمة وقائمة المحتويات":
-def render_intro():
-    st.subheader("المقدمة وقائمة المحتويات")
-    
-    # عرض إطار Heyzine للمقدمة
-    components.html(
-        """
-        <iframe allowfullscreen="allowfullscreen" allow="autoplay; fullscreen; clipboard-write" scrolling="no" class="fp-iframe" style="border: 1px solid lightgray; width: 100%; height: 600px;" src="https://heyzine.com/flip-book/8107d3f1a1.html"></iframe>
-        """,
-        height=620
-    )
-    
-    st.markdown("---")
-    st.info("📌 يمثل هذا الجزء الخريطة التوجيهية للرحلة عبر أبواب الكتاب الأربعة، ولا يتطلب أوراق عمل أو أدوات تفاعلية سفلية.")else:
+    render_intro()
+else:
     render_placeholder(selected_chapter)
