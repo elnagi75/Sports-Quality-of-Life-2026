@@ -24,7 +24,7 @@ st.markdown("""
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     
-    /* تنسيق خاص لعنوان الأداة السفلية ليكون بارزاً */
+    /* تنسيق خاص لعنوان الأداة السفلية */
     .lab-title {
         color: #2E86C1;
         text-align: center !important;
@@ -33,6 +33,22 @@ st.markdown("""
         border-bottom: 2px solid #2E86C1;
         margin-top: 30px;
         margin-bottom: 20px;
+    }
+    
+    /* تكبير خطوط الأسئلة والاختيارات داخل الأداة */
+    .stRadio label {
+        font-size: 18px !important;
+        font-weight: bold;
+    }
+    .stMultiSelect label {
+        font-size: 18px !important;
+        font-weight: bold;
+    }
+    .stButton button {
+        font-size: 20px !important;
+        font-weight: bold !important;
+        border-radius: 8px !important;
+        padding: 10px !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -81,59 +97,67 @@ def render_intro():
     )
 
 def render_chapter_1():
-    # 1. عرض الكتاب التفاعلي (Heyzine)
+    # 1. عرض الكتاب التفاعلي
     st.info("📱 **تنويه لمستخدمي الهواتف الذكية:** لتصفح صفحات الكتاب بسلاسة، يُرجى الضغط على أيقونة **التكبير (Fullscreen)**.")
     components.html(
         """<iframe src="https://heyzine.com/flip-book/cfea6877c0.html" width="100%" height="600" frameborder="0" allowfullscreen></iframe>""",
         height=620
     )
     
-    # 2. الأداة السفلية: مختبر القوام الرقمي
+    # 2. الأداة السفلية
     st.markdown("<h2 class='lab-title'>🛠️ مختبر القوام الرقمي: استمارة التحليل الذاتي (مهمة تطبيقية)</h2>", unsafe_allow_html=True)
-    st.write("بناءً على ما درسته في الفصل الأول (قاعدة الوصلات المترابطة ومتلازمة التقاطع العلوي)، قف أمام المرآة وسجل ملاحظاتك بصدق للحصول على خطتك التصحيحية.")
+    st.write("📌 **تعليمات:** قف أمام المرآة وسجل ملاحظاتك بصدق. (يُرجى تحديد خيار واحد من كل عنصر، الدوائر فارغة افتراضياً لضمان دقة اختيارك).")
     
     with st.form("posture_lab_form"):
         st.subheader("أولاً: الفحص البصري (Check Point)")
         col1, col2 = st.columns(2)
         
+        # استخدام index=None لجعل الاختيارات فارغة في البداية
         with col1:
-            head = st.radio("الرأس والرقبة:", ["متعامد مع الكتف (طبيعي)", "مائل للأمام (Forward Head)"])
-            upper_back = st.radio("أعلى الظهر:", ["مسطح طبيعي", "محدب (Kyphosis)"])
-            pelvis = st.radio("الحوض:", ["متساوي الجانبين", "مائل لجهة واحدة"])
+            head = st.radio("الرأس والرقبة:", ["متعامد مع الكتف (طبيعي)", "مائل للأمام (Forward Head)"], index=None)
+            upper_back = st.radio("أعلى الظهر:", ["مسطح طبيعي", "محدب (Kyphosis)"], index=None)
+            pelvis = st.radio("الحوض:", ["متساوي الجانبين", "مائل لجهة واحدة"], index=None)
             
         with col2:
-            shoulders = st.radio("الكتفان:", ["متساويان", "أحدهما أعلى من الآخر"])
-            lower_back = st.radio("أسفل الظهر:", ["انحناء طبيعي", "مقعر بشدة (Lordosis)", "مسطح (Flat Back)"])
+            shoulders = st.radio("الكتفان:", ["متساويان", "أحدهما أعلى من الآخر"], index=None)
+            lower_back = st.radio("أسفل الظهر:", ["انحناء طبيعي", "مقعر بشدة (Lordosis)", "مسطح (Flat Back)"], index=None)
             
         st.subheader("ثانياً: العادات والمسببات (Analysis)")
-        habits = st.multiselect("اختر العادات التي تمارسها يومياً:", 
+        habits = st.multiselect("اختر العادات التي تمارسها يومياً (يمكنك اختيار أكثر من واحدة):", 
                                 ["استخدام الهاتف بكثرة وبوضع انحناء", "حمل الحقيبة على كتف واحد", "الجلوس الخاطئ لفترات طويلة", "قلة ممارسة التمارين الرياضية"])
         
         submit_btn = st.form_submit_button("استخراج الخطة التصحيحية الهندسية")
         
         if submit_btn:
-            st.success("✅ تم تحليل البيانات ميكانيكياً بنجاح! إليك خطتك التصحيحية:")
-            
-            # تحليل الرقبة وأعلى الظهر (متلازمة التقاطع العلوي)
-            if head == "مائل للأمام (Forward Head)" or upper_back == "محدب (Kyphosis)":
-                st.warning("⚠️ **تشخيص:** لديك مؤشرات لـ (متلازمة التقاطع العلوي - Upper Crossed Syndrome).")
-                st.write("**الخطة:**")
-                st.write("- **عضلات تحتاج إطالة (مشدودة):** عضلات الصدر وأعلى الرقبة الخلفية.")
-                st.write("- **عضلات تحتاج تقوية (ضعيفة):** عضلات أعلى الظهر (بين اللوحين) وعضلات الرقبة الأمامية العميقة.")
-                st.write("- **تطبيق عملي فوري:** قم بتمرين (Chin Tuck) لمدة 10 ثوانٍ 3 مرات يومياً لفك الضغط عن الرقبة.")
+            # التحقق من أن الطالب أجاب على جميع الأسئلة
+            if None in [head, upper_back, pelvis, shoulders, lower_back]:
+                st.error("⚠️ خطأ: الرجاء تحديد خيار في جميع عناصر الفحص البصري قبل استخراج الخطة.")
+            else:
+                st.success("✅ تم تحليل البيانات ميكانيكياً بنجاح! إليك خطتك التصحيحية:")
                 
-            # تحليل أسفل الظهر والحوض
-            if lower_back == "مقعر بشدة (Lordosis)":
-                st.warning("⚠️ **تشخيص:** زيادة في التقعر القطني (Lordosis).")
-                st.write("**الخطة:** تقوية عضلات البطن (Core) وإطالة عضلات الفخذ الأمامية.")
-            
-            if shoulders == "أحدهما أعلى من الآخر" or pelvis == "مائل لجهة واحدة":
-                st.warning("⚠️ **تشخيص:** عدم توازن جانبي (ميكانيكا السلسلة الحركية متأثرة).")
-                if "حمل الحقيبة على كتف واحد" in habits:
-                    st.write("**الخطة:** تجنب حمل الحقيبة على كتف واحد فوراً، قم بتمارين الإطالة الجانبية لتصحيح التوازن العضلي.")
-            
-            if head == "متعامد مع الكتف (طبيعي)" and upper_back == "مسطح طبيعي" and lower_back == "انحناء طبيعي" and shoulders == "متساويان" and pelvis == "متساوي الجانبين":
-                st.info("🌟 **تشخيص:** قوامك الهندسي متزن وممتاز! حافظ على عاداتك الجيدة واستمر في ممارسة الرياضة.")
+                # تحليل الرقبة وأعلى الظهر
+                if head == "مائل للأمام (Forward Head)" or upper_back == "محدب (Kyphosis)":
+                    st.warning("⚠️ **تشخيص:** لديك مؤشرات لـ (متلازمة التقاطع العلوي - Upper Crossed Syndrome).")
+                    st.write("**الخطة:**")
+                    st.write("- **عضلات تحتاج إطالة (مشدودة):** عضلات الصدر وأعلى الرقبة الخلفية.")
+                    st.write("- **عضلات تحتاج تقوية (ضعيفة):** عضلات أعلى الظهر (بين اللوحين) وعضلات الرقبة الأمامية العميقة.")
+                    st.write("- **تطبيق عملي فوري:** قم بتمرين (Chin Tuck) لمدة 10 ثوانٍ 3 مرات يومياً لفك الضغط عن الرقبة.")
+                    
+                # تحليل أسفل الظهر والحوض
+                if lower_back == "مقعر بشدة (Lordosis)":
+                    st.warning("⚠️ **تشخيص:** زيادة في التقعر القطني (Lordosis).")
+                    st.write("**الخطة:** تقوية عضلات البطن (Core) وإطالة عضلات الفخذ الأمامية.")
+                elif lower_back == "مسطح (Flat Back)":
+                    st.warning("⚠️ **تشخيص:** ظهر مسطح (Flat Back) وفقدان الانحناء الطبيعي.")
+                    st.write("**الخطة:** تجنب الجلوس بظهر مرتخٍ، وقم بتمارين مرونة أسفل الظهر.")
+                
+                if shoulders == "أحدهما أعلى من الآخر" or pelvis == "مائل لجهة واحدة":
+                    st.warning("⚠️ **تشخيص:** عدم توازن جانبي (ميكانيكا السلسلة الحركية متأثرة).")
+                    if "حمل الحقيبة على كتف واحد" in habits:
+                        st.write("**الخطة:** تجنب حمل الحقيبة على كتف واحد فوراً، قم بتمارين الإطالة الجانبية لتصحيح التوازن العضلي.")
+                
+                if head == "متعامد مع الكتف (طبيعي)" and upper_back == "مسطح طبيعي" and lower_back == "انحناء طبيعي" and shoulders == "متساويان" and pelvis == "متساوي الجانبين":
+                    st.info("🌟 **تشخيص:** قوامك الهندسي متزن وممتاز! حافظ على عاداتك الجيدة واستمر في ممارسة الرياضة.")
 
 def render_placeholder(chapter_title):
     st.subheader(chapter_title)
