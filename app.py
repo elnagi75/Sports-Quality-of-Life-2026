@@ -2,31 +2,43 @@ import streamlit as st
 import streamlit.components.v1 as components
 import os
 
-st.set_page_config(page_title="الرياضة وجودة الحياة", page_icon="🏃‍♂️", layout="centered") # layout="centered" هو الأفضل للموبايل
+# --- 1. الإعدادات الأساسية للمنصة (متوافقة مع الموبايل) ---
+st.set_page_config(page_title="الرياضة وجودة الحياة", page_icon="🏃‍♂️", layout="centered")
 
-# CSS متجاوب مع الموبايل
+# --- 2. تنسيق CSS ---
 st.markdown("""
 <style>
-    html, body { direction: rtl; text-align: right; }
-    [data-testid="stSidebar"] { direction: rtl; }
+    /* توجيه المنصة بالكامل للغة العربية */
+    html, body, [class*="css"] {
+        direction: rtl;
+        text-align: right;
+        font-family: 'Arial', sans-serif;
+    }
     
-    /* تصميم متجاوب للموبايل */
-    .stApp { max-width: 600px; margin: 0 auto; } 
+    /* تنسيق القائمة الجانبية */
+    [data-testid="stSidebar"] {
+        direction: rtl;
+    }
     
+    /* تصميم متجاوب للموبايل لإزالة الهوامش العريضة */
+    .stApp { max-width: 600px; margin: 0 auto; }
+    
+    /* إخفاء القوائم الافتراضية */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     
-    /* تصغير العناوين للموبايل */
-    h1 { font-size: 20px !important; text-align: center; }
-    h3 { font-size: 16px !important; }
+    /* تصغير العناوين لتتناسب مع شاشات الموبايل */
+    h1 { font-size: 22px !important; text-align: center; margin-bottom: 10px !important;}
+    h3 { font-size: 16px !important; text-align: center; }
 </style>
 """, unsafe_allow_html=True)
 
-# ترويسة مبسطة
+# --- 3. الترويسة الرئيسية ---
 st.title("الرياضة وجودة الحياة (دليل التطبيق الذاتي)")
 
+# --- 4. الفهرس وربط كل فصل بصورة الغلاف ---
 chapters = {
-    "محتويات الكتاب": "intro.jpg", # تم تغيير الاسم
+    "محتويات الكتاب": "intro.jpg",
     "الفصل الأول: هندسة الحركة البشرية": "ch_1.jpg",
     "الفصل الثاني: فسيولوجيا الجهد": "ch_2.jpg",
     "الفصل الثالث: القياسات الجسمية": "ch_3.jpg",
@@ -42,18 +54,33 @@ chapters = {
     "الملحق الموسوعي للأجهزة": "appendix.jpg"
 }
 
-# القائمة الجانبية
+# --- 5. القائمة الجانبية (Sidebar) ---
 st.sidebar.header("محتويات الكتاب")
-selected_chapter = st.sidebar.radio("اختر الفصل:", list(chapters.keys()))
 
-# عرض الغلاف والاسم جنباً إلى جنب في القائمة الجانبية (بشكل رأسي)
+# حجز مساحة علوية للصورة لتظهر فوق الأزرار
+image_container = st.sidebar.empty()
+
+# عرض أزرار الاختيار تحت الصورة
+selected_chapter = st.sidebar.radio("اختر الفصل للبدء:", list(chapters.keys()))
+
+# تحديث الصورة في المساحة العلوية بناءً على الاختيار
 image_name = chapters[selected_chapter]
 if os.path.exists(image_name):
-    st.sidebar.image(image_name, use_column_width=True)
+    image_container.image(image_name, use_column_width=True)
+else:
+    image_container.warning(f"مساحة محجوزة لغلاف: {image_name}")
 
-# الموجه الديناميكي
+st.sidebar.markdown("---")
+
+# --- 6. الموجه الديناميكي (مساحة العرض) ---
 if selected_chapter == "محتويات الكتاب":
-    components.html("""<iframe src="https://heyzine.com/flip-book/8107d3f1a1.html" width="100%" height="450" frameborder="0" allowfullscreen></iframe>""", height=460)
+    # الكود المدمج من Heyzine
+    components.html(
+        """
+        <iframe src="https://heyzine.com/flip-book/8107d3f1a1.html" width="100%" height="480" frameborder="0" allowfullscreen></iframe>
+        """,
+        height=500
+    )
 else:
     st.subheader(selected_chapter)
-    st.info("قيد التجهيز...")
+    st.info(f"محتوى '{selected_chapter}' قيد التجهيز... سيتم بناؤه لاحقاً خطوة بخطوة.")
