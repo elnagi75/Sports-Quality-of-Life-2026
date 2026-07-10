@@ -2,39 +2,44 @@ import streamlit as st
 import streamlit.components.v1 as components
 import os
 
-# --- 1. الإعدادات الأساسية للمنصة (متوافقة مع الموبايل) ---
-st.set_page_config(page_title="الرياضة وجودة الحياة", page_icon="🏃‍♂️", layout="centered")
+# --- 1. الإعدادات الأساسية للمنصة ---
+# استخدام العرض الشامل (wide) يعطي أفضل نتيجة للكمبيوتر، ويتكيف آلياً مع الموبايل
+st.set_page_config(page_title="الرياضة وجودة الحياة", page_icon="🏃‍♂️", layout="wide")
 
-# --- 2. تنسيق CSS ---
+# --- 2. تنسيق CSS المُعالج ---
 st.markdown("""
 <style>
-    /* توجيه المنصة بالكامل للغة العربية */
-    html, body, [class*="css"] {
+    /* ضبط الاتجاه العام للمنصة لليمين */
+    .stApp {
         direction: rtl;
-        text-align: right;
         font-family: 'Arial', sans-serif;
     }
     
-    /* تنسيق القائمة الجانبية */
+    /* القائمة الجانبية */
     [data-testid="stSidebar"] {
         direction: rtl;
     }
     
-    /* تصميم متجاوب للموبايل لإزالة الهوامش العريضة */
-    .stApp { max-width: 600px; margin: 0 auto; }
+    /* الحل الجذري لمشكلة الحروف العمودية في الموبايل */
+    /* هذا الكود يحمي زر القائمة العلوي من التشوه بسبب اتجاه اليمين لليسار */
+    [data-testid="collapsedControl"], [data-testid="stHeader"] {
+        direction: ltr;
+    }
     
-    /* إخفاء القوائم الافتراضية */
+    /* محاذاة العناوين والنصوص لليمين */
+    h1, h2, h3, p, label, .stMarkdown {
+        text-align: right !important;
+    }
+    
+    /* إخفاء القوائم الافتراضية لمنصة Streamlit */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
-    
-    /* تصغير العناوين لتتناسب مع شاشات الموبايل */
-    h1 { font-size: 22px !important; text-align: center; margin-bottom: 10px !important;}
-    h3 { font-size: 16px !important; text-align: center; }
 </style>
 """, unsafe_allow_html=True)
 
 # --- 3. الترويسة الرئيسية ---
 st.title("الرياضة وجودة الحياة (دليل التطبيق الذاتي)")
+st.markdown("---")
 
 # --- 4. الفهرس وربط كل فصل بصورة الغلاف ---
 chapters = {
@@ -57,7 +62,7 @@ chapters = {
 # --- 5. القائمة الجانبية (Sidebar) ---
 st.sidebar.header("محتويات الكتاب")
 
-# حجز مساحة علوية للصورة لتظهر فوق الأزرار
+# حجز مساحة علوية للصورة لتظهر فوق الأزرار بشكل احترافي
 image_container = st.sidebar.empty()
 
 # عرض أزرار الاختيار تحت الصورة
@@ -74,12 +79,12 @@ st.sidebar.markdown("---")
 
 # --- 6. الموجه الديناميكي (مساحة العرض) ---
 if selected_chapter == "محتويات الكتاب":
-    # الكود المدمج من Heyzine
+    # الكود المدمج من Heyzine بحجم مريح للقراءة
     components.html(
         """
-        <iframe src="https://heyzine.com/flip-book/8107d3f1a1.html" width="100%" height="480" frameborder="0" allowfullscreen></iframe>
+        <iframe src="https://heyzine.com/flip-book/8107d3f1a1.html" width="100%" height="600" frameborder="0" allowfullscreen></iframe>
         """,
-        height=500
+        height=620
     )
 else:
     st.subheader(selected_chapter)
