@@ -87,6 +87,17 @@ def render_placeholder(chapter_title):
 
 # --- 6. الموجه الديناميكي (Router) ---
 if selected_chapter == "المقدمة وقائمة المحتويات":
-    render_intro()
-else:
+def render_intro():
+    st.subheader("المقدمة وقائمة المحتويات")
+    
+    # عرض إطار Heyzine للمقدمة
+    components.html(
+        """
+        <iframe allowfullscreen="allowfullscreen" allow="autoplay; fullscreen; clipboard-write" scrolling="no" class="fp-iframe" style="border: 1px solid lightgray; width: 100%; height: 600px;" src="https://heyzine.com/flip-book/8107d3f1a1.html"></iframe>
+        """,
+        height=620
+    )
+    
+    st.markdown("---")
+    st.info("📌 يمثل هذا الجزء الخريطة التوجيهية للرحلة عبر أبواب الكتاب الأربعة، ولا يتطلب أوراق عمل أو أدوات تفاعلية سفلية.")else:
     render_placeholder(selected_chapter)
