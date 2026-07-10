@@ -19,6 +19,26 @@ st.markdown("""
         font-family: 'Arial', sans-serif;
     }
     
+    /* تنسيق القائمة الجانبية */
+    [data-testid="stSidebar"] {
+        direction: rtl;
+    }
+    
+    /* إخفاء القائمة العلوية الافتراضية */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+
+    /* تحسينات العرض على الموبايل */
+    @media (max-width: 600px) {
+        h1 { font-size: 22px !important; margin-bottom: 5px !important; }
+        h3 { font-size: 16px !important; margin-bottom: 5px !important; }
+        .stMarkdown p { font-size: 14px !important; }
+        /* تقليل الهوامش العلوية والسفلية في الموبايل لتوفير مساحة */
+        .main .block-container { padding-top: 1rem !important; padding-bottom: 1rem !important; }
+    }
+</style>
+    }
+    
     /* تنسيق القائمة الجانبية لتتناسب مع الاتجاه */
     [data-testid="stSidebar"] {
         direction: rtl;
