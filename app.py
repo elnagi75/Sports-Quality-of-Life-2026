@@ -3,36 +3,37 @@ import streamlit.components.v1 as components
 import os
 
 # --- 1. الإعدادات الأساسية للمنصة ---
-# استخدام العرض الشامل (wide) يعطي أفضل نتيجة للكمبيوتر، ويتكيف آلياً مع الموبايل
 st.set_page_config(page_title="الرياضة وجودة الحياة", page_icon="🏃‍♂️", layout="wide")
 
 # --- 2. تنسيق CSS المُعالج ---
 st.markdown("""
 <style>
-    /* ضبط الاتجاه العام للمنصة لليمين */
     .stApp {
         direction: rtl;
         font-family: 'Arial', sans-serif;
     }
-    
-    /* القائمة الجانبية */
     [data-testid="stSidebar"] {
         direction: rtl;
     }
-    
-    /* الحل الجذري لمشكلة الحروف العمودية في الموبايل */
     [data-testid="collapsedControl"], [data-testid="stHeader"] {
         direction: ltr;
     }
-    
-    /* محاذاة العناوين والنصوص لليمين */
     h1, h2, h3, p, label, .stMarkdown {
         text-align: right !important;
     }
-    
-    /* إخفاء القوائم الافتراضية لمنصة Streamlit */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
+    
+    /* تنسيق خاص لعنوان الأداة السفلية ليكون بارزاً */
+    .lab-title {
+        color: #2E86C1;
+        text-align: center !important;
+        font-weight: bold;
+        padding: 10px;
+        border-bottom: 2px solid #2E86C1;
+        margin-top: 30px;
+        margin-bottom: 20px;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -40,7 +41,7 @@ st.markdown("""
 st.title("الرياضة وجودة الحياة (دليل التطبيق الذاتي)")
 st.markdown("---")
 
-# --- 4. الفهرس وربط كل فصل بصورة الغلاف ---
+# --- 4. الفهرس ---
 chapters = {
     "محتويات الكتاب": "intro.jpg",
     "الفصل الأول: هندسة الحركة البشرية": "ch_1.jpg",
@@ -58,36 +59,90 @@ chapters = {
     "الملحق الموسوعي للأجهزة": "appendix.jpg"
 }
 
-# --- 5. القائمة الجانبية (Sidebar) ---
+# --- 5. القائمة الجانبية ---
 st.sidebar.header("محتويات الكتاب")
-
-# حجز مساحة علوية للصورة لتظهر فوق الأزرار بشكل احترافي
 image_container = st.sidebar.empty()
-
-# عرض أزرار الاختيار تحت الصورة
 selected_chapter = st.sidebar.radio("اختر الفصل للبدء:", list(chapters.keys()))
 
-# تحديث الصورة في المساحة العلوية بناءً على الاختيار
 image_name = chapters[selected_chapter]
 if os.path.exists(image_name):
     image_container.image(image_name, use_column_width=True)
 else:
     image_container.warning(f"مساحة محجوزة لغلاف: {image_name}")
-
 st.sidebar.markdown("---")
 
-# --- 6. الموجه الديناميكي (مساحة العرض) ---
-if selected_chapter == "محتويات الكتاب":
-    # إضافة رسالة توجيهية لمستخدمي الهواتف
+# --- 6. دوال العرض الخاصة بكل فصل ---
+
+def render_intro():
     st.info("📱 **تنويه لمستخدمي الهواتف الذكية:** لتصفح صفحات الكتاب بسلاسة، يُرجى الضغط على أيقونة **التكبير (Fullscreen)** الموجودة داخل إطار العرض.")
-    
-    # الكود المدمج من Heyzine بحجم مريح للقراءة
     components.html(
-        """
-        <iframe src="https://heyzine.com/flip-book/8107d3f1a1.html" width="100%" height="600" frameborder="0" allowfullscreen></iframe>
-        """,
+        """<iframe src="https://heyzine.com/flip-book/8107d3f1a1.html" width="100%" height="600" frameborder="0" allowfullscreen></iframe>""",
         height=620
     )
+
+def render_chapter_1():
+    # 1. عرض الكتاب التفاعلي (Heyzine)
+    st.info("📱 **تنويه لمستخدمي الهواتف الذكية:** لتصفح صفحات الكتاب بسلاسة، يُرجى الضغط على أيقونة **التكبير (Fullscreen)**.")
+    components.html(
+        """<iframe src="https://heyzine.com/flip-book/cfea6877c0.html" width="100%" height="600" frameborder="0" allowfullscreen></iframe>""",
+        height=620
+    )
+    
+    # 2. الأداة السفلية: مختبر القوام الرقمي
+    st.markdown("<h2 class='lab-title'>🛠️ مختبر القوام الرقمي: استمارة التحليل الذاتي (مهمة تطبيقية)</h2>", unsafe_allow_html=True)
+    st.write("بناءً على ما درسته في الفصل الأول (قاعدة الوصلات المترابطة ومتلازمة التقاطع العلوي)، قف أمام المرآة وسجل ملاحظاتك بصدق للحصول على خطتك التصحيحية.")
+    
+    with st.form("posture_lab_form"):
+        st.subheader("أولاً: الفحص البصري (Check Point)")
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            head = st.radio("الرأس والرقبة:", ["متعامد مع الكتف (طبيعي)", "مائل للأمام (Forward Head)"])
+            upper_back = st.radio("أعلى الظهر:", ["مسطح طبيعي", "محدب (Kyphosis)"])
+            pelvis = st.radio("الحوض:", ["متساوي الجانبين", "مائل لجهة واحدة"])
+            
+        with col2:
+            shoulders = st.radio("الكتفان:", ["متساويان", "أحدهما أعلى من الآخر"])
+            lower_back = st.radio("أسفل الظهر:", ["انحناء طبيعي", "مقعر بشدة (Lordosis)", "مسطح (Flat Back)"])
+            
+        st.subheader("ثانياً: العادات والمسببات (Analysis)")
+        habits = st.multiselect("اختر العادات التي تمارسها يومياً:", 
+                                ["استخدام الهاتف بكثرة وبوضع انحناء", "حمل الحقيبة على كتف واحد", "الجلوس الخاطئ لفترات طويلة", "قلة ممارسة التمارين الرياضية"])
+        
+        submit_btn = st.form_submit_button("استخراج الخطة التصحيحية الهندسية")
+        
+        if submit_btn:
+            st.success("✅ تم تحليل البيانات ميكانيكياً بنجاح! إليك خطتك التصحيحية:")
+            
+            # تحليل الرقبة وأعلى الظهر (متلازمة التقاطع العلوي)
+            if head == "مائل للأمام (Forward Head)" or upper_back == "محدب (Kyphosis)":
+                st.warning("⚠️ **تشخيص:** لديك مؤشرات لـ (متلازمة التقاطع العلوي - Upper Crossed Syndrome).")
+                st.write("**الخطة:**")
+                st.write("- **عضلات تحتاج إطالة (مشدودة):** عضلات الصدر وأعلى الرقبة الخلفية.")
+                st.write("- **عضلات تحتاج تقوية (ضعيفة):** عضلات أعلى الظهر (بين اللوحين) وعضلات الرقبة الأمامية العميقة.")
+                st.write("- **تطبيق عملي فوري:** قم بتمرين (Chin Tuck) لمدة 10 ثوانٍ 3 مرات يومياً لفك الضغط عن الرقبة.")
+                
+            # تحليل أسفل الظهر والحوض
+            if lower_back == "مقعر بشدة (Lordosis)":
+                st.warning("⚠️ **تشخيص:** زيادة في التقعر القطني (Lordosis).")
+                st.write("**الخطة:** تقوية عضلات البطن (Core) وإطالة عضلات الفخذ الأمامية.")
+            
+            if shoulders == "أحدهما أعلى من الآخر" or pelvis == "مائل لجهة واحدة":
+                st.warning("⚠️ **تشخيص:** عدم توازن جانبي (ميكانيكا السلسلة الحركية متأثرة).")
+                if "حمل الحقيبة على كتف واحد" in habits:
+                    st.write("**الخطة:** تجنب حمل الحقيبة على كتف واحد فوراً، قم بتمارين الإطالة الجانبية لتصحيح التوازن العضلي.")
+            
+            if head == "متعامد مع الكتف (طبيعي)" and upper_back == "مسطح طبيعي" and lower_back == "انحناء طبيعي" and shoulders == "متساويان" and pelvis == "متساوي الجانبين":
+                st.info("🌟 **تشخيص:** قوامك الهندسي متزن وممتاز! حافظ على عاداتك الجيدة واستمر في ممارسة الرياضة.")
+
+def render_placeholder(chapter_title):
+    st.subheader(chapter_title)
+    st.info(f"محتوى '{chapter_title}' قيد التجهيز... سيتم بناؤه لاحقاً خطوة بخطوة.")
+
+# --- 7. الموجه الديناميكي (Router) ---
+if selected_chapter == "محتويات الكتاب":
+    render_intro()
+elif selected_chapter == "الفصل الأول: هندسة الحركة البشرية":
+    render_chapter_1()
 else:
-    st.subheader(selected_chapter)
-    st.info(f"محتوى '{selected_chapter}' قيد التجهيز... سيتم بناؤه لاحقاً خطوة بخطوة.")
+    render_placeholder(selected_chapter)
