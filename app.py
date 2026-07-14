@@ -11,6 +11,10 @@ st.markdown("""
     .stApp { direction: rtl; font-family: 'Arial', sans-serif; }
     [data-testid="stSidebar"] { direction: rtl; }
     [data-testid="collapsedControl"], [data-testid="stHeader"] { direction: ltr; }
+    
+    /* إخفاء الحروف العربية المتقطعة عند طي القائمة الجانبية */
+    [data-testid="collapsedControl"] span { display: none !important; }
+    
     h1, h2, h3, p, label, .stMarkdown { text-align: right !important; }
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
@@ -86,9 +90,9 @@ st.sidebar.markdown("---")
 # --- 6. عرض الكتب والأدوات التفاعلية ---
 st.info("📱 **تنويه لمستخدمي الهواتف الذكية:** لتصفح صفحات الكتاب بسلاسة، يُرجى الضغط على أيقونة **التكبير (Fullscreen)** الموجودة داخل إطار العرض.")
 
-# العرض المباشر والنظيف للرابط
+# العرض المباشر للرابط مع إضافة خاصية sandbox لمنع الخروج من المنصة أو توجيه المتصفح
 components.html(
-    f"""<iframe src="{chapter_data['url']}" width="100%" height="600" frameborder="0" allowfullscreen></iframe>""",
+    f"""<iframe src="{chapter_data['url']}" width="100%" height="600" frameborder="0" allowfullscreen sandbox="allow-scripts allow-same-origin allow-popups"></iframe>""",
     height=620
 )
 
