@@ -181,4 +181,12 @@ def render_chapter_1():
 
 def render_placeholder(chapter_title):
     st.subheader(chapter_title)
-    st.info(f
+    st.info(f"محتوى '{chapter_title}' قيد التجهيز... سيتم بناؤه لاحقاً خطوة بخطوة عند رفع ملفاته.")
+
+# --- 7. الموجه الديناميكي (Router) ---
+if selected_chapter == "محتويات الكتاب":
+    render_intro()
+elif selected_chapter == "الفصل الأول: هندسة الحركة البشرية":
+    render_chapter_1()
+else:
+    render_placeholder(selected_chapter)
