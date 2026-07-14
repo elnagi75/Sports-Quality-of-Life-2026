@@ -1,6 +1,7 @@
 import streamlit as st
 import streamlit.components.v1 as components
 import os
+import time
 
 # --- 1. الإعدادات الأساسية للمنصة ---
 st.set_page_config(page_title="الرياضة وجودة الحياة", page_icon="🏃‍♂️", layout="wide")
@@ -63,7 +64,6 @@ chapters = {
     "الفصل الحادي عشر: التغذية": {"url": MAIN_BOOK_URL, "page": 131, "img": "ch_11.jpg"},
     "الفصل الثاني عشر: خرافات اللياقة": {"url": MAIN_BOOK_URL, "page": 143, "img": "ch_12.jpg"},
     
-    # حساب صفحات الملاحق: (رقم الصفحة المطبوع - 156) للوصول للرقم الفعلي في الـ PDF
     "الملحق 1: المشي والجري": {"url": APPX_BOOK_URL, "page": 1, "img": "appx_1.jpg"},
     "الملحق 2: التدريب بوزن الجسم": {"url": APPX_BOOK_URL, "page": 13, "img": "appx_2.jpg"},
     "الملحق 3: حبل الوثب": {"url": APPX_BOOK_URL, "page": 23, "img": "appx_3.jpg"},
@@ -81,7 +81,7 @@ chapters = {
 }
 
 # --- 5. القائمة الجانبية (Sidebar) ---
-st.sidebar.header("تصفح المنصة")
+st.sidebar.header("محتويات الكتاب") # تم التعديل كما تفضلت
 
 image_container = st.sidebar.empty()
 selected_chapter = st.sidebar.radio("اختر الفصل أو الملحق:", list(chapters.keys()))
@@ -99,8 +99,9 @@ st.sidebar.markdown("---")
 
 st.info("📱 **تنويه لمستخدمي الهواتف الذكية:** لتصفح صفحات الكتاب بسلاسة، يُرجى الضغط على أيقونة **التكبير (Fullscreen)** الموجودة داخل إطار العرض.")
 
-# بناء الرابط النهائي مع رقم الصفحة للقفز التلقائي
-final_url = f"{chapter_data['url']}#page={chapter_data['page']}"
+# بناء الرابط النهائي مع متغير زمني لكسر الذاكرة المؤقتة وإجبار الإطار على تحديث الصفحة
+timestamp = int(time.time())
+final_url = f"{chapter_data['url']}?t={timestamp}#page={chapter_data['page']}"
 
 components.html(
     f"""<iframe src="{final_url}" width="100%" height="600" frameborder="0" allowfullscreen></iframe>""",
