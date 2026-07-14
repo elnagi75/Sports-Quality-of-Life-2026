@@ -24,7 +24,6 @@ st.markdown("""
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     
-    /* تنسيق خاص لعنوان الأداة السفلية */
     .lab-title {
         color: #2E86C1;
         text-align: center !important;
@@ -35,21 +34,9 @@ st.markdown("""
         margin-bottom: 20px;
     }
     
-    /* تكبير خطوط الأسئلة والاختيارات داخل الأداة */
-    .stRadio label {
-        font-size: 18px !important;
-        font-weight: bold;
-    }
-    .stMultiSelect label {
-        font-size: 18px !important;
-        font-weight: bold;
-    }
-    .stButton button {
-        font-size: 20px !important;
-        font-weight: bold !important;
-        border-radius: 8px !important;
-        padding: 10px !important;
-    }
+    .stRadio label { font-size: 18px !important; font-weight: bold; }
+    .stMultiSelect label { font-size: 18px !important; font-weight: bold; }
+    .stButton button { font-size: 20px !important; font-weight: bold !important; border-radius: 8px !important; padding: 10px !important; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -57,7 +44,7 @@ st.markdown("""
 st.title("الرياضة وجودة الحياة (دليل التطبيق الذاتي)")
 st.markdown("---")
 
-# --- 4. الفهرس الشامل (فصول وملاحق متصلة) ---
+# --- 4. الفهرس الشامل ---
 chapters = {
     "محتويات الكتاب": "intro.jpg",
     "الفصل الأول: هندسة الحركة البشرية": "ch_1.jpg",
@@ -91,13 +78,9 @@ chapters = {
 # --- 5. القائمة الجانبية (Sidebar) ---
 st.sidebar.header("تصفح المنصة")
 
-# مساحة لصورة الغلاف لتظهر أعلى القائمة
 image_container = st.sidebar.empty()
-
-# عرض الفصول والملاحق كلها في قائمة اختيار واحدة متصلة
 selected_chapter = st.sidebar.radio("اختر الفصل أو الملحق:", list(chapters.keys()))
 
-# تحديث صورة الغلاف بناءً على الاختيار
 image_name = chapters[selected_chapter]
 if os.path.exists(image_name):
     image_container.image(image_name, use_column_width=True)
@@ -105,22 +88,28 @@ else:
     image_container.warning(f"مساحة محجوزة لغلاف: {image_name}")
 st.sidebar.markdown("---")
 
-# --- 6. دوال العرض الخاصة بكل فصل ---
+# --- 6. عرض الكتب والأدوات التفاعلية ---
 
-def render_intro():
-    st.info("📱 **تنويه لمستخدمي الهواتف الذكية:** لتصفح صفحات الكتاب بسلاسة، يُرجى الضغط على أيقونة **التكبير (Fullscreen)** الموجودة داخل إطار العرض.")
-    components.html(
-        """<iframe src="https://heyzine.com/flip-book/8107d3f1a1.html" width="100%" height="600" frameborder="0" allowfullscreen></iframe>""",
-        height=620
-    )
+# الروابط الجديدة للكتب
+MAIN_BOOK_URL = "https://heyzine.com/flip-book/248efb967c.html"
+APPX_BOOK_URL = "https://heyzine.com/flip-book/1eda58291d.html"
 
-def render_chapter_1():
-    st.info("📱 **تنويه لمستخدمي الهواتف الذكية:** لتصفح صفحات الكتاب بسلاسة، يُرجى الضغط على أيقونة **التكبير (Fullscreen)**.")
-    components.html(
-        """<iframe src="https://heyzine.com/flip-book/cfea6877c0.html" width="100%" height="600" frameborder="0" allowfullscreen></iframe>""",
-        height=620
-    )
-    
+st.info("📱 **تنويه لمستخدمي الهواتف الذكية:** لتصفح صفحات الكتاب بسلاسة، يُرجى الضغط على أيقونة **التكبير (Fullscreen)** الموجودة داخل إطار العرض.")
+
+# التوجيه الديناميكي للروابط (إذا كان الاختيار يحتوي على كلمة "الملحق" يفتح الكتاب الثاني)
+if "الملحق" in selected_chapter:
+    current_url = APPX_BOOK_URL
+else:
+    current_url = MAIN_BOOK_URL
+
+# عرض الـ iframe الخاص بالكتاب
+components.html(
+    f"""<iframe src="{current_url}" width="100%" height="600" frameborder="0" allowfullscreen></iframe>""",
+    height=620
+)
+
+# عرض الأداة التفاعلية حصراً مع الفصل الأول
+if selected_chapter == "الفصل الأول: هندسة الحركة البشرية":
     st.markdown("<h2 class='lab-title'>🛠️ مختبر القوام الرقمي: استمارة التحليل الذاتي (مهمة تطبيقية)</h2>", unsafe_allow_html=True)
     st.write("📌 **تعليمات:** قف أمام المرآة وسجل ملاحظاتك بصدق. (يُرجى تحديد خيار واحد من كل عنصر، الدوائر فارغة افتراضياً لضمان دقة اختيارك).")
     
@@ -170,15 +159,3 @@ def render_chapter_1():
                 
                 if head == "متعامد مع الكتف (طبيعي)" and upper_back == "مسطح طبيعي" and lower_back == "انحناء طبيعي" and shoulders == "متساويان" and pelvis == "متساوي الجانبين":
                     st.info("🌟 **تشخيص:** قوامك الهندسي متزن وممتاز! حافظ على عاداتك الجيدة واستمر في ممارسة الرياضة.")
-
-def render_placeholder(chapter_title):
-    st.subheader(chapter_title)
-    st.info(f"محتوى '{chapter_title}' قيد التجهيز... سيتم بناؤه لاحقاً خطوة بخطوة عند رفع ملفاته.")
-
-# --- 7. الموجه الديناميكي (Router) ---
-if selected_chapter == "محتويات الكتاب":
-    render_intro()
-elif selected_chapter == "الفصل الأول: هندسة الحركة البشرية":
-    render_chapter_1()
-else:
-    render_placeholder(selected_chapter)
