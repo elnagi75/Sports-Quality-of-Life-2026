@@ -1,7 +1,5 @@
 import streamlit as st
-import streamlit.components.v1 as components
 import os
-import time
 
 # --- 1. الإعدادات الأساسية للمنصة ---
 st.set_page_config(page_title="الرياضة وجودة الحياة", page_icon="🏃‍♂️", layout="wide")
@@ -99,16 +97,15 @@ st.sidebar.markdown("---")
 
 st.info("📱 **تنويه لمستخدمي الهواتف الذكية:** لتصفح صفحات الكتاب بسلاسة، يُرجى الضغط على أيقونة **التكبير (Fullscreen)** الموجودة داخل إطار العرض.")
 
-# بناء الرابط النهائي مع إجبار تحديث الإطار دون المساس بنقاء الرابط
-timestamp = int(time.time() * 1000)
+# بناء الرابط النهائي وزرعه مباشرة كـ HTML خام لضمان التحديث والقفز التلقائي
 final_url = f"{chapter_data['url']}#page={chapter_data['page']}"
 
-html_code = f"""
-<div id="refresh_{timestamp}">
-    <iframe src="{final_url}" width="100%" height="600" frameborder="0" allowfullscreen></iframe>
-</div>
-"""
-components.html(html_code, height=620)
+st.markdown(
+    f"""
+    <iframe src="{final_url}" width="100%" height="600" style="border: 1px solid lightgray;" allowfullscreen allow="autoplay; clipboard-write" scrolling="no"></iframe>
+    """,
+    unsafe_allow_html=True
+)
 
 # عرض الأداة التفاعلية حصراً مع الفصل الأول
 if selected_chapter == "الفصل الأول: هندسة الحركة البشرية":
