@@ -5,7 +5,7 @@ import os
 # --- 1. الإعدادات الأساسية للمنصة ---
 st.set_page_config(page_title="الرياضة وجودة الحياة", page_icon="🏃‍♂️", layout="wide")
 
-# --- 2. تنسيق CSS المُعالج والفاخر ---
+# --- 2. تنسيق CSS المُعالج والفاخر (تحديث الأزرار والنتائج) ---
 st.markdown("""
 <style>
     /* التوجيه والخطوط */
@@ -55,24 +55,46 @@ st.markdown("""
     
     /* الخيارات والدوائر (أخضر زمردي) */
     div[role="radiogroup"] label p, div[data-baseweb="select"] span, div[data-baseweb="checkbox"] label p {
-        font-size: 20px !important;
+        font-size: 22px !important;
         font-weight: bold !important;
         color: #117A65 !important; 
     }
     
-    /* زر الإرسال */
+    /* 🔴 زر الإرسال - أحمر سميك ومثير للضغط 🔴 */
     .stButton button { 
-        font-size: 20px !important; 
-        font-weight: bold !important; 
-        border-radius: 8px !important; 
-        padding: 10px !important; 
+        font-size: 26px !important; 
+        font-weight: 900 !important; 
+        border-radius: 12px !important; 
+        padding: 15px !important; 
         width: 100%;
-        background-color: #2E86C1;
-        color: white;
+        background-color: #C0392B !important; /* أحمر رياضي داكن */
+        color: white !important;
+        border: 3px solid #922B21 !important;
+        box-shadow: 0px 5px 8px rgba(0,0,0,0.2) !important;
+        transition: all 0.3s ease !important;
+        margin-top: 25px !important;
+        margin-bottom: 15px !important;
     }
     .stButton button:hover {
-        background-color: #1a5276;
-        color: white;
+        background-color: #E74C3C !important; /* أحمر ساطع عند التفاعل */
+        border: 3px solid #C0392B !important;
+        transform: scale(1.02) !important; /* تأثير التكبير عند لمس الماوس */
+    }
+
+    /* ✨ تكبير نصوص النتائج والتقارير لتتطابق مع العناوين ✨ */
+    div[data-testid="stAlert"] div[data-testid="stMarkdownContainer"] p,
+    div[data-testid="stAlert"] div[data-testid="stMarkdownContainer"] span {
+        font-size: 24px !important;
+        font-weight: bold !important;
+        line-height: 1.8 !important;
+    }
+
+    /* النصوص العادية التي تظهر كتقارير أسفل الزر */
+    form div[data-testid="stMarkdownContainer"] p {
+        font-size: 22px !important;
+        font-weight: bold !important;
+        color: #1a5276 !important;
+        line-height: 1.6;
     }
 </style>
 """, unsafe_allow_html=True)
