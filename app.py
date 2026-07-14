@@ -81,7 +81,7 @@ chapters = {
 }
 
 # --- 5. القائمة الجانبية (Sidebar) ---
-st.sidebar.header("محتويات الكتاب") # تم التعديل كما تفضلت
+st.sidebar.header("محتويات الكتاب")
 
 image_container = st.sidebar.empty()
 selected_chapter = st.sidebar.radio("اختر الفصل أو الملحق:", list(chapters.keys()))
@@ -99,14 +99,16 @@ st.sidebar.markdown("---")
 
 st.info("📱 **تنويه لمستخدمي الهواتف الذكية:** لتصفح صفحات الكتاب بسلاسة، يُرجى الضغط على أيقونة **التكبير (Fullscreen)** الموجودة داخل إطار العرض.")
 
-# بناء الرابط النهائي مع متغير زمني لكسر الذاكرة المؤقتة وإجبار الإطار على تحديث الصفحة
-timestamp = int(time.time())
-final_url = f"{chapter_data['url']}?t={timestamp}#page={chapter_data['page']}"
+# بناء الرابط النهائي مع إجبار تحديث الإطار دون المساس بنقاء الرابط
+timestamp = int(time.time() * 1000)
+final_url = f"{chapter_data['url']}#page={chapter_data['page']}"
 
-components.html(
-    f"""<iframe src="{final_url}" width="100%" height="600" frameborder="0" allowfullscreen></iframe>""",
-    height=620
-)
+html_code = f"""
+<div id="refresh_{timestamp}">
+    <iframe src="{final_url}" width="100%" height="600" frameborder="0" allowfullscreen></iframe>
+</div>
+"""
+components.html(html_code, height=620)
 
 # عرض الأداة التفاعلية حصراً مع الفصل الأول
 if selected_chapter == "الفصل الأول: هندسة الحركة البشرية":
