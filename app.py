@@ -34,8 +34,7 @@ st.markdown("""
         margin-bottom: 20px;
     }
     
-    .stRadio label { font-size: 18px !important; font-weight: bold; }
-    .stMultiSelect label { font-size: 18px !important; font-weight: bold; }
+    .stRadio label, .stMultiSelect label { font-size: 18px !important; font-weight: bold; }
     .stButton button { font-size: 20px !important; font-weight: bold !important; border-radius: 8px !important; padding: 10px !important; }
 </style>
 """, unsafe_allow_html=True)
@@ -44,35 +43,41 @@ st.markdown("""
 st.title("الرياضة وجودة الحياة (دليل التطبيق الذاتي)")
 st.markdown("---")
 
-# --- 4. الفهرس الشامل ---
+# الروابط الرئيسية للكتب
+MAIN_BOOK_URL = "https://heyzine.com/flip-book/248efb967c.html"
+APPX_BOOK_URL = "https://heyzine.com/flip-book/e18c597993.html"
+
+# --- 4. الفهرس الشامل (مع أرقام القفز التلقائي للصفحات) ---
 chapters = {
-    "محتويات الكتاب": "intro.jpg",
-    "الفصل الأول: هندسة الحركة البشرية": "ch_1.jpg",
-    "الفصل الثاني: فسيولوجيا الجهد": "ch_2.jpg",
-    "الفصل الثالث: القياسات الجسمية": "ch_3.jpg",
-    "الفصل الرابع: اللياقة القلبية": "ch_4.jpg",
-    "الفصل الخامس: القوة والتحمل": "ch_5.jpg",
-    "الفصل السادس: المرونة": "ch_6.jpg",
-    "الفصل السابع: اللياقة المهارية": "ch_7.jpg",
-    "الفصل الثامن: مبادئ التدريب": "ch_8.jpg",
-    "الفصل التاسع: أنظمة تدريب القوة": "ch_9.jpg",
-    "الفصل العاشر: التدريب الذكي": "ch_10.jpg",
-    "الفصل الحادي عشر: التغذية": "ch_11.jpg",
-    "الفصل الثاني عشر: خرافات اللياقة": "ch_12.jpg",
-    "الملحق 1: المشي والجري": "appx_1.jpg",
-    "الملحق 2: التدريب بوزن الجسم": "appx_2.jpg",
-    "الملحق 3: حبل الوثب": "appx_3.jpg",
-    "الملحق 4: صندوق الخطو": "appx_4.jpg",
-    "الملحق 5: عقلة الباب": "appx_5.jpg",
-    "الملحق 6: أحزمة المقاومة المطاطية": "appx_6.jpg",
-    "الملحق 7: سلم التوافق": "appx_7.jpg",
-    "الملحق 8: أطواق اللياقة": "appx_8.jpg",
-    "الملحق 9: كرة اللياقة": "appx_9.jpg",
-    "الملحق 10: الكرة الطبية": "appx_10.jpg",
-    "الملحق 11: الأثقال الحرة": "appx_11.jpg",
-    "الملحق 12: أحزمة التعلق (TRX)": "appx_12.jpg",
-    "الملحق 13: حبال القوة القتالية": "appx_13.jpg",
-    "الملحق 14: جرس الكيتل بيل": "appx_14.jpg"
+    "محتويات الكتاب": {"url": MAIN_BOOK_URL, "page": 1, "img": "intro.jpg"},
+    "الفصل الأول: هندسة الحركة البشرية": {"url": MAIN_BOOK_URL, "page": 1, "img": "ch_1.jpg"},
+    "الفصل الثاني: فسيولوجيا الجهد": {"url": MAIN_BOOK_URL, "page": 13, "img": "ch_2.jpg"},
+    "الفصل الثالث: القياسات الجسمية": {"url": MAIN_BOOK_URL, "page": 25, "img": "ch_3.jpg"},
+    "الفصل الرابع: اللياقة القلبية": {"url": MAIN_BOOK_URL, "page": 37, "img": "ch_4.jpg"},
+    "الفصل الخامس: القوة والتحمل": {"url": MAIN_BOOK_URL, "page": 47, "img": "ch_5.jpg"},
+    "الفصل السادس: المرونة": {"url": MAIN_BOOK_URL, "page": 62, "img": "ch_6.jpg"},
+    "الفصل السابع: اللياقة المهارية": {"url": MAIN_BOOK_URL, "page": 75, "img": "ch_7.jpg"},
+    "الفصل الثامن: مبادئ التدريب": {"url": MAIN_BOOK_URL, "page": 89, "img": "ch_8.jpg"},
+    "الفصل التاسع: أنظمة تدريب القوة": {"url": MAIN_BOOK_URL, "page": 103, "img": "ch_9.jpg"},
+    "الفصل العاشر: التدريب الذكي": {"url": MAIN_BOOK_URL, "page": 117, "img": "ch_10.jpg"},
+    "الفصل الحادي عشر: التغذية": {"url": MAIN_BOOK_URL, "page": 131, "img": "ch_11.jpg"},
+    "الفصل الثاني عشر: خرافات اللياقة": {"url": MAIN_BOOK_URL, "page": 143, "img": "ch_12.jpg"},
+    
+    # حساب صفحات الملاحق: (رقم الصفحة المطبوع - 156) للوصول للرقم الفعلي في الـ PDF
+    "الملحق 1: المشي والجري": {"url": APPX_BOOK_URL, "page": 1, "img": "appx_1.jpg"},
+    "الملحق 2: التدريب بوزن الجسم": {"url": APPX_BOOK_URL, "page": 13, "img": "appx_2.jpg"},
+    "الملحق 3: حبل الوثب": {"url": APPX_BOOK_URL, "page": 23, "img": "appx_3.jpg"},
+    "الملحق 4: صندوق الخطو": {"url": APPX_BOOK_URL, "page": 41, "img": "appx_4.jpg"},
+    "الملحق 5: عقلة الباب": {"url": APPX_BOOK_URL, "page": 53, "img": "appx_5.jpg"},
+    "الملحق 6: أحزمة المقاومة المطاطية": {"url": APPX_BOOK_URL, "page": 65, "img": "appx_6.jpg"},
+    "الملحق 7: سلم التوافق": {"url": APPX_BOOK_URL, "page": 79, "img": "appx_7.jpg"},
+    "الملحق 8: أطواق اللياقة": {"url": APPX_BOOK_URL, "page": 105, "img": "appx_8.jpg"},
+    "الملحق 9: كرة اللياقة": {"url": APPX_BOOK_URL, "page": 127, "img": "appx_9.jpg"},
+    "الملحق 10: الكرة الطبية": {"url": APPX_BOOK_URL, "page": 155, "img": "appx_10.jpg"},
+    "الملحق 11: الأثقال الحرة": {"url": APPX_BOOK_URL, "page": 167, "img": "appx_11.jpg"},
+    "الملحق 12: أحزمة التعلق (TRX)": {"url": APPX_BOOK_URL, "page": 179, "img": "appx_12.jpg"},
+    "الملحق 13: حبال القوة القتالية": {"url": APPX_BOOK_URL, "page": 211, "img": "appx_13.jpg"},
+    "الملحق 14: جرس الكيتل بيل": {"url": APPX_BOOK_URL, "page": 227, "img": "appx_14.jpg"}
 }
 
 # --- 5. القائمة الجانبية (Sidebar) ---
@@ -81,30 +86,24 @@ st.sidebar.header("تصفح المنصة")
 image_container = st.sidebar.empty()
 selected_chapter = st.sidebar.radio("اختر الفصل أو الملحق:", list(chapters.keys()))
 
-image_name = chapters[selected_chapter]
-if os.path.exists(image_name):
-    image_container.image(image_name, use_column_width=True)
+# جلب بيانات الفصل المختار
+chapter_data = chapters[selected_chapter]
+
+if os.path.exists(chapter_data["img"]):
+    image_container.image(chapter_data["img"], use_column_width=True)
 else:
-    image_container.warning(f"مساحة محجوزة لغلاف: {image_name}")
+    image_container.warning(f"مساحة محجوزة لغلاف: {chapter_data['img']}")
 st.sidebar.markdown("---")
 
 # --- 6. عرض الكتب والأدوات التفاعلية ---
 
-# الروابط الجديدة للكتب (بعد تعديلها لصيغة كتاب)
-MAIN_BOOK_URL = "https://heyzine.com/flip-book/248efb967c.html"
-APPX_BOOK_URL = "https://heyzine.com/flip-book/e18c597993.html"
-
 st.info("📱 **تنويه لمستخدمي الهواتف الذكية:** لتصفح صفحات الكتاب بسلاسة، يُرجى الضغط على أيقونة **التكبير (Fullscreen)** الموجودة داخل إطار العرض.")
 
-# التوجيه الديناميكي للروابط
-if "الملحق" in selected_chapter:
-    current_url = APPX_BOOK_URL
-else:
-    current_url = MAIN_BOOK_URL
+# بناء الرابط النهائي مع رقم الصفحة للقفز التلقائي
+final_url = f"{chapter_data['url']}#page={chapter_data['page']}"
 
-# عرض الـ iframe الخاص بالكتاب
 components.html(
-    f"""<iframe src="{current_url}" width="100%" height="600" frameborder="0" allowfullscreen></iframe>""",
+    f"""<iframe src="{final_url}" width="100%" height="600" frameborder="0" allowfullscreen></iframe>""",
     height=620
 )
 
