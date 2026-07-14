@@ -5,7 +5,7 @@ import os
 # --- 1. الإعدادات الأساسية للمنصة ---
 st.set_page_config(page_title="الرياضة وجودة الحياة", page_icon="🏃‍♂️", layout="wide")
 
-# --- 2. تنسيق CSS المُعالج والفاخر (تحديث الأزرار والنتائج) ---
+# --- 2. تنسيق CSS المُعالج والفاخر (اختراق حماية أزرار النماذج والنتائج) ---
 st.markdown("""
 <style>
     /* التوجيه والخطوط */
@@ -60,25 +60,28 @@ st.markdown("""
         color: #117A65 !important; 
     }
     
-    /* 🔴 زر الإرسال - أحمر سميك ومثير للضغط 🔴 */
-    .stButton button { 
-        font-size: 26px !important; 
-        font-weight: 900 !important; 
-        border-radius: 12px !important; 
-        padding: 15px !important; 
-        width: 100%;
-        background-color: #C0392B !important; /* أحمر رياضي داكن */
-        color: white !important;
+    /* 🔴 زر الإرسال داخل النماذج (اختراق الحماية) - أحمر سميك ومثير 🔴 */
+    div[data-testid="stFormSubmitButton"] > button {
+        background-color: #C0392B !important; 
         border: 3px solid #922B21 !important;
+        border-radius: 12px !important;
+        padding: 10px !important;
+        width: 100% !important;
         box-shadow: 0px 5px 8px rgba(0,0,0,0.2) !important;
         transition: all 0.3s ease !important;
         margin-top: 25px !important;
         margin-bottom: 15px !important;
     }
-    .stButton button:hover {
-        background-color: #E74C3C !important; /* أحمر ساطع عند التفاعل */
-        border: 3px solid #C0392B !important;
-        transform: scale(1.02) !important; /* تأثير التكبير عند لمس الماوس */
+    div[data-testid="stFormSubmitButton"] > button:hover {
+        background-color: #E74C3C !important; 
+        border-color: #C0392B !important;
+        transform: scale(1.02) !important; 
+    }
+    /* تكبير خط الكلمة داخل الزر وتلوينها بالأبيض */
+    div[data-testid="stFormSubmitButton"] > button p {
+        font-size: 26px !important;
+        font-weight: 900 !important;
+        color: #FFFFFF !important;
     }
 
     /* ✨ تكبير نصوص النتائج والتقارير لتتطابق مع العناوين ✨ */
@@ -154,7 +157,7 @@ components.html(
 )
 
 # ==============================================================================
-# --- 7. قسم المختبرات التفاعلية (مع التحكم التام في العناوين والتفريغ) ---
+# --- 7. قسم المختبرات التفاعلية ---
 # ==============================================================================
 
 if selected_chapter == "الفصل الأول: هندسة الحركة البشرية":
