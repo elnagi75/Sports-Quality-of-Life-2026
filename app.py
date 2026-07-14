@@ -90,13 +90,13 @@ st.sidebar.markdown("---")
 
 # --- 6. عرض الكتب والأدوات التفاعلية ---
 
-# الروابط الجديدة للكتب
+# الروابط الجديدة للكتب (بعد تعديلها لصيغة كتاب)
 MAIN_BOOK_URL = "https://heyzine.com/flip-book/248efb967c.html"
-APPX_BOOK_URL = "https://heyzine.com/flip-book/1eda58291d.html"
+APPX_BOOK_URL = "https://heyzine.com/flip-book/e18c597993.html"
 
 st.info("📱 **تنويه لمستخدمي الهواتف الذكية:** لتصفح صفحات الكتاب بسلاسة، يُرجى الضغط على أيقونة **التكبير (Fullscreen)** الموجودة داخل إطار العرض.")
 
-# التوجيه الديناميكي للروابط (إذا كان الاختيار يحتوي على كلمة "الملحق" يفتح الكتاب الثاني)
+# التوجيه الديناميكي للروابط
 if "الملحق" in selected_chapter:
     current_url = APPX_BOOK_URL
 else:
