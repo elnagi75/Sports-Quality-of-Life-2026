@@ -16,7 +16,7 @@ st.markdown("""
     /* إخفاء الحروف المتقطعة في زر الطي */
     [data-testid="collapsedControl"] span { display: none !important; }
     
-    /* 🔥 تثبيت زر فتح وإغلاق القائمة الجانبية (الزر العائم) 🔥 */
+    /* 🔥 1. تثبيت زر الفتح (عندما تكون القائمة مغلقة) في الشاشة 🔥 */
     [data-testid="collapsedControl"] {
         position: fixed !important;
         top: 15px !important;
@@ -30,6 +30,16 @@ st.markdown("""
     [data-testid="collapsedControl"]:hover {
         transform: scale(1.1) !important;
         background-color: #eaf2f8 !important;
+    }
+
+    /* 🔥 2. تثبيت رأس القائمة الجانبية (زر الإغلاق) ليظل ظاهراً عند التمرير لأسفل 🔥 */
+    [data-testid="stSidebarHeader"] {
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 999999 !important;
+        background-color: #f0f2f6 !important; 
+        padding-bottom: 15px !important;
+        border-bottom: 1px solid #d6eaf8 !important;
     }
     
     h1, h2, h3, p, label, .stMarkdown { text-align: right !important; }
@@ -73,7 +83,7 @@ st.markdown("""
     [data-testid="stSidebar"] .stRadio > label p {
         font-size: 26px !important;
         font-weight: 900 !important;
-        color: #1a5276 !important; /* لون كحلي ملكي */
+        color: #1a5276 !important; 
         border-bottom: 2px solid #2E86C1 !important;
         padding-bottom: 8px !important;
         margin-bottom: 15px !important;
